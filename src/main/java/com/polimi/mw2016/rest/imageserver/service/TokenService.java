@@ -23,7 +23,7 @@ public class TokenService {
 	public TokenService() {
 	}
 	
-	public void addAuthzToken(String authToken, int seconds, int idClient, String username) throws Exception {
+	public void addAuthzToken(String authToken, int seconds, String idClient, String username) throws Exception {
 		Date start = new Date();
 		Date expiration = calcExpiration(start, seconds);
 		AuthzToken authzToken = new AuthzToken(authToken, expiration, start, em.find(Client.class, idClient), us.getUser(username));

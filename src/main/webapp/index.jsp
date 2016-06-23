@@ -3,36 +3,20 @@
 	
 <%
 	HttpServletRequest myrequest = request;
-	String uriResourcesRoot = myrequest.getScheme() + "://" + myrequest.getServerName() + ":" + myrequest.getServerPort() + myrequest.getContextPath() + "/resources/";
+	String root = myrequest.getScheme() + "://" + myrequest.getServerName() + ":" + myrequest.getServerPort() + myrequest.getContextPath() + "/resources/";
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="../../favicon.ico">
-
-<title>SOA: Simple Image Server</title>
-
-<!-- Bootstrap core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
-
-<!-- Custom styles for this template -->
-<link href="css/starter-template.css" rel="stylesheet">
-
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<title>SOA: Simple Image Server</title>
+	<!-- Bootstrap core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="css/starter-template.css" rel="stylesheet">
 </head>
 
 <body>
@@ -59,9 +43,9 @@
 	</nav>
 
 	<div class="container starter-template">
-		<h1>Middleware Technologies for Distributed Systems Project</h1>
+		<h1>Middleware Technologies for Distributed Systems</h1>
 		<h2>SOA: Simple Image Server</h2>
-
+		<p></p>
 		<p>The goal of this project is to create an Image Server. The
 			Image Server should provide a REST API for:</p>
 
@@ -86,16 +70,21 @@
 			<div class="panel-heading">
 				<h3 class="panel-title">Creating new users</h3>
 			</div>
+			
 			<div class="panel-body">
-				<dl class="dl-horizontal">
-  					<dt>First Name:</dt><dd>Luke</dd>
-  					<dt>Last Name:</dt><dd>Skywalker</dd>
-  					<dt>Username:</dt><dd>jedi</dd>
-  					<dt>Password:</dt><dd>yoda</dd>
-				</dl>	
-				<p>JSON: {"newuser":{"username":"jedi","password":"yoda","firstname":"Luke","lastname":"Skywalker"}}</p>
+				<table class="table table-striped">
+	  				<thead>
+	  					<tr><th>key</th><th>value</th></tr>
+	  				</thead>
+	  				<tbody>
+	  					<tr><td>firstname</td><td>Luke</td></tr>
+	  					<tr><td>lastname</td><td>Skywalker</td></tr>
+	  					<tr><td>username</td><td>jedi</td></tr>
+	  					<tr><td>password</td><td>yoda</td></tr>
+	  				</tbody>
+				</table>				
 				<p><small><strong>NB: NO Auth required</strong></small></p>
-				<pre>curl -k -i -XPOST -H "Content-type:application/json" -d '{"newuser":{"username":"jedi","password":"yoda","firstname":"Luke","lastname":"Skywalker"}}' <%=uriResourcesRoot.toString()+"users"%> &amp;&amp; echo</pre>
+				<pre>curl -k -i -XPOST -H "Content-type:application/json" -d '{"newuser":{"username":"jedi","password":"yoda","firstname":"Luke","lastname":"Skywalker"}}' <%=root+"users"%> &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -104,9 +93,9 @@
 				<h3 class="panel-title">Listing the users in the system</h3>
 			</div>
 			<div class="panel-body">
-				<p>@return a JSONArray containing all registered users</p>
+				<p>return a JSONArray containing all registered users</p>
 				<p><small><strong>NB: Basic Auth or Bearer Token REQUIRED</strong></small></p>
-				<pre>curl -k --basic -u "hansolo:polpo" -H "Accept: application/json" <%=uriResourcesRoot.toString()+"users"%> &amp;&amp; echo</pre>
+				<pre>curl -k --basic -u "hansolo:polpo" -H "Accept: application/json" <%=root+"users"%> &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -117,7 +106,7 @@
 			<div class="panel-body">
 				<p>Upload an image to the server</p>
 				<p><small><strong>NB: Basic Auth or Bearer Token REQUIRED</strong></small></p>
-				<pre>curl -k --basic -u "hansolo:polpo" -i -X POST -H "Content-Type: multipart/form-data" -F file=@test.jpg <%=uriResourcesRoot.toString()+"images"%> &amp;&amp; echo</pre>
+				<pre>curl -k --basic -u "hansolo:polpo" -i -X POST -H "Content-Type: multipart/form-data" -F file=@test.jpg <%=root+"images"%> &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -126,9 +115,9 @@
 				<h3 class="panel-title">Listing the available images by user id</h3>
 			</div>
 			<div class="panel-body">
-				<p>@return a JSONArray containing all the images ordered by user id</p>
+				<p>return a JSONArray containing all the images ordered by user id</p>
 				<p><small><strong>NB: Basic Auth or Bearer Token REQUIRED</strong></small></p>
-				<pre>curl -k --basic -u "hansolo:polpo" -H "Accept: application/json" <%=uriResourcesRoot.toString()+"images"%> &amp;&amp; echo</pre>
+				<pre>curl -k --basic -u "hansolo:polpo" -H "Accept: application/json" <%=root+"images"%> &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -137,9 +126,9 @@
 				<h3 class="panel-title">Obtaining the images from the server</h3>
 			</div>
 			<div class="panel-body">
-				<p>@return the image (binary array)</p>
+				<p>return the image (binary array)</p>
 				<p><small><strong>NB: Basic Auth or Bearer Token REQUIRED</strong></small></p>
-				<pre>curl -o "image.jpg" -k --basic -u "hansolo:polpo" -H "Accept: image/jpeg" <%=uriResourcesRoot.toString()+"images/2"%> &amp;&amp; echo</pre>
+				<pre>curl -o "image.jpg" -k --basic -u "hansolo:polpo" -H "Accept: image/jpeg" <%=root+"images/2"%> &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -147,24 +136,27 @@
 	
 	<div class="container" id="oAuth">
 		<h2> OAuth2</h2>
-		<p> spiegare qualcosa </p>
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Request an Authorisation Token</h3>
 			</div>
 			<div class="panel-body">
-			<p>Parameters:</p>
-				<dl class="dl-horizontal">
-					<dt>client_id:</dt><dd>1</dd>
-					<dt>scope:</dt><dd></dd>
-					<dt>state:</dt><dd>4330544</dd>
-					<dt>redirect_uri:</dt><dd>https://192.168.1.100:8181/imageserver/resources/printParam</dd>
-					<dt>response_type:</dt><dd>code</dd>
-				</dl>
-				<p>@return the authorisation code)</p>
-				<p><small><strong>NB: Basic Auth or Bearer Token REQUIRED</strong></small></p>
-				<pre>curl -k --basic -u "hansolo:polpo" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -L "<%=uriResourcesRoot.toString()+"authz?client_id=1&scope=&state=4330544&redirect_uri=" + uriResourcesRoot.toString()+ "printParam" +"&response_type=code"%>" &amp;&amp; echo</pre>
+				<p>Parameters:</p>
+				<table class="table table-striped">
+	  				<thead>
+	  					<tr><th>key</th><th>value</th></tr>
+	  				</thead>
+	  				<tbody>
+	  					<tr><td>client_id</td><td>gcczxnqpjkc65grfx2wewkmsegkhfvez</td></tr>
+	  					<tr><td>scope</td><td></td></tr>
+	  					<tr><td>state</td><td>4330544</td></tr>
+	  					<tr><td>redirect_uri</td><td><%=root+"printParam"%></td></tr>
+	  					<tr><td>response_type</td><td>code</td></tr>
+	  				</tbody>
+				</table>				
+				<p><small><strong>NB: Basic Auth REQUIRED</strong></small></p>
+				<pre>curl -k --basic -u "hansolo:polpo" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -L "<%=root+"authz?client_id=1&scope=&state=4330544&redirect_uri=" + root+ "printParam" +"&response_type=code"%>" &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -174,14 +166,19 @@
 			</div>
 			<div class="panel-body">
 			<p>Parameters:</p>
-				<dl class="dl-horizontal">
-					<dt>client_id:</dt><dd>1</dd>
-					<dt>client_secret:</dt><dd>taaj6o1t4d1ennm2cfqb2sqlql</dd>
-					<dt>redirect_uri:</dt><dd>https://192.168.1.100:8181/imageserver/resources/printParam</dd>
-					<dt>grant_type:</dt><dd>authorization_code</dd>
-					<dt>code:</dt><dd>AUTHZ_TOKEN</dd>
-				</dl>
-				<pre>curl -k -X POST -H "Accept: application/json" -H "Authorization: Bearer AUTHZ_TOKEN"  -H "Content-Type: application/x-www-form-urlencoded" -L "<%=uriResourcesRoot.toString()+"token?client_id=1&client_secret=taaj6o1t4d1ennm2cfqb2sqlql&redirect_uri=" + uriResourcesRoot.toString()+ "printParam" +"&grant_type=authorization_code&code=AUTHZ_TOKEN"%>" &amp;&amp; echo</pre>
+				<table class="table table-striped">
+	  				<thead>
+	  					<tr><th>key</th><th>value</th></tr>
+	  				</thead>
+	  				<tbody>
+	  					<tr><td>client_id</td><td>gcczxnqpjkc65grfx2wewkmsegkhfvez</td></tr>
+	  					<tr><td>client_secret</td><td>gnug8962t4fssqrybmbjxgqb9x3fursm</td></tr>
+	  					<tr><td>redirect_uri</td><td><%=root+"printParam"%></td></tr>
+	  					<tr><td>grant_type</td><td>authorization_code</td></tr>
+	  					<tr><td>code</td><td>MY_AUTHORIZATION_CODE</td></tr>
+	  				</tbody>
+				</table>	
+				<pre>curl -k -X POST -H "Accept: application/json" -H "Content-Type: application/x-www-form-urlencoded" -L "<%=root+"token?client_id=1&client_secret=taaj6o1t4d1ennm2cfqb2sqlql&redirect_uri=" + root+ "printParam" +"&grant_type=authorization_code&code=MY_AUTHORIZATION_CODE"%>" &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -190,7 +187,8 @@
 				<h3 class="panel-title">Get a resource using the Access Token</h3>
 			</div>
 			<div class="panel-body">
-				<pre>curl -k -H "Authorization: Bearer ACCESS_TOKEN" -H "Accept: application/json" <%=uriResourcesRoot.toString()+"images"%> &amp;&amp; echo</pre>
+				<p>Use <i>Bearer</i> authorization </p>
+				<pre>curl -k -H "Authorization: Bearer MY_ACCESS_TOKEN" -H "Accept: application/json" <%=root+"images"%> &amp;&amp; echo</pre>
 			</div>
 		</div>
 		
@@ -200,11 +198,8 @@
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 	<script src="js/bootstrap.min.js"></script>
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
 </body>
 </html>

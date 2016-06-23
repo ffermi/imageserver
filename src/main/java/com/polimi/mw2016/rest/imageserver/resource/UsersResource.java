@@ -38,7 +38,6 @@ public class UsersResource {
 	@Context ServletContext sc;
 	@Context HttpServletRequest request;
 	
-	
 	/**
 	 * Retrieves the list of users
 	 * @return a JSONArray containing all registered users
@@ -46,9 +45,9 @@ public class UsersResource {
 	@Secured
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
-	public JsonArray getAllUsers(){		
+	public JsonArray getAllUsers(){	
+		System.out.println("RESOURCE SERVER - /users - GET request performed by " + request.getUserPrincipal().getName());
 		String uriPrefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resources/users/";
-		System.out.println(uriPrefix);
 		return jmans.buildAllUsersList(us.getAllUsers(), uriPrefix);
 	}
 
@@ -59,6 +58,8 @@ public class UsersResource {
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response register(JsonObject newUserJO){
+		System.out.println("RESOURCE SERVER - /users - POST request");
+		
 		Integer idNewUser = null;
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	
@@ -71,7 +72,7 @@ public class UsersResource {
 			idNewUser = us.addUser(parsedJSON.get(0), parsedJSON.get(1), parsedJSON.get(2), parsedJSON.get(3));
 			
 			if(idNewUser == null){
-				//cannot create the user because username already taken.
+				//cannot create the user, username already taken.
 				response = Response.status(Status.NOT_ACCEPTABLE)
 						.entity("Username already taken!").type("text/plain")
 						.build();
@@ -99,16 +100,13 @@ public class UsersResource {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
 	public JsonObject getUserInfo(@PathParam("idUser") int idUser){
+		System.out.println("RESOURCE SERVER - /users/" + idUser + " - request performed by " + request.getUserPrincipal().getName());
 		String serverURI = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resources/images";
 		String uriPrefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resources/users/";
 		return jmans.buildUserInfo(us.getUser(idUser), uriPrefix, serverURI);
 	}
 	
 	/*
-	@Path("{userId}/images")
-	public ImagesContainerSubResource getContainer(@PathParam("userId") int userId){
-		return rc.initResource(new ImagesContainerSubResource(us, is, jmans, sc, request, userId));
-	}
 	@Path("{userId}/images/{idImage}")
 	public ImageSubResource getImage(@PathParam("idImage")int idImage){
 		return rc.initResource(new ImageSubResource(us, is, idImage));

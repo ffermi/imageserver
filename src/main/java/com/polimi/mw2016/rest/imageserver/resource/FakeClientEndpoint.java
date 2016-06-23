@@ -12,17 +12,16 @@ import javax.ws.rs.core.Context;
 
 
 @Path("printParam")
-public class QueryParamPrinterEndpoint {
+public class FakeClientEndpoint {
 
 	@GET
 	public JsonObject printParam(@Context HttpServletRequest request){
 		return getParameters(request);
 	}
 	
-	private JsonObject getParameters(HttpServletRequest request) {
-		
-		JsonObjectBuilder job = Json.createObjectBuilder();
-		
+	// Create a JsonObject containing all the query parameters
+	private JsonObject getParameters(HttpServletRequest request) {		
+		JsonObjectBuilder job = Json.createObjectBuilder();		
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
         	String paramName = parameterNames.nextElement();

@@ -14,7 +14,6 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
@@ -22,7 +21,6 @@ import javax.ws.rs.ext.Provider;
 import org.glassfish.jersey.internal.util.Base64;
 
 import com.polimi.mw2016.rest.imageserver.model.AccessToken;
-import com.polimi.mw2016.rest.imageserver.model.AuthzToken;
 import com.polimi.mw2016.rest.imageserver.model.User;
 import com.polimi.mw2016.rest.imageserver.service.UserService;
 

@@ -15,7 +15,7 @@ public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idClient;
+	private String idClient;
 
 	private String secret;
 
@@ -29,17 +29,17 @@ public class Client implements Serializable {
 
 	public Client() {
 	}
-	public Client(int idClient, String secret) {
+	public Client(String idClient, String secret) {
 		this.idClient = idClient;
 		this.secret = secret;
 	}
 
 
-	public int getIdClient() {
+	public String getIdClient() {
 		return this.idClient;
 	}
 
-	public void setIdClient(int idClient) {
+	public void setIdClient(String idClient) {
 		this.idClient = idClient;
 	}
 

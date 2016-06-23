@@ -25,12 +25,10 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 
-import com.polimi.mw2016.rest.imageserver.Secured;
 import com.polimi.mw2016.rest.imageserver.model.AuthzToken;
 import com.polimi.mw2016.rest.imageserver.service.TokenService;
 import com.polimi.mw2016.rest.imageserver.service.UserService;
 
-//@Secured
 @Path("/token")
 public class TokenEndpoint {
 
@@ -39,18 +37,12 @@ public class TokenEndpoint {
 	
 	@Context SecurityContext securityContext;
 	
-	private final String ACCESS_TOKEN_EXPIRATION = "3600"; //1ora
+	private final String ACCESS_TOKEN_EXPIRATION = "3600"; //1 ora
 
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json")
 	public Response authorize(@Context HttpServletRequest request) throws OAuthSystemException {
-		/*
-		System.out.println("AUTHORIZATION SERVER - /token - authScheme" + securityContext.getAuthenticationScheme());
-		if(!securityContext.getAuthenticationScheme().equals("Bearer")){
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}		
-		*/
 		
 		//The Default OAuth Authorization Server class that validates whether a given HttpServletRequest is a valid OAuth Token request. 
 		OAuthTokenRequest oauthRequest = null; 
@@ -77,10 +69,9 @@ public class TokenEndpoint {
 				System.out.println("AUTHORIZATION SERVER - /token -  authorization code: " +oauthRequest.getParam(OAuth.OAUTH_CODE));
 				
 				//check if clientID/secret is valid
-				String clientId = String.valueOf(authzToken.getClient().getIdClient());
+				String clientId = authzToken.getClient().getIdClient();
 				String clientSecret = authzToken.getClient().getSecret();
-				if(!clientId.equals(oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID)) || 
-						!clientSecret.equals(oauthRequest.getParam(OAuth.OAUTH_CLIENT_SECRET))) {
+				if(!clientId.equals(oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID)) || !clientSecret.equals(oauthRequest.getParam(OAuth.OAUTH_CLIENT_SECRET))) {
 					OAuthResponse response = OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
 				            .setError(OAuthError.TokenResponse.INVALID_CLIENT).setErrorDescription("client_id/secret not valid")
 				            .buildJSONMessage();
@@ -102,20 +93,19 @@ public class TokenEndpoint {
 			        return Response.status(response.getResponseStatus()).entity(response.getBody()).build();
 		}
 		
-		//if client ok generate token		
+		//if client ok generate access token		
 		String accessToken = oauthIssuerImpl.accessToken();
 		OAuthResponse response = OAuthASResponse
 		    .tokenResponse(HttpServletResponse.SC_OK)
 		    .setAccessToken(accessToken)
 		    .setExpiresIn(ACCESS_TOKEN_EXPIRATION)
 		    .buildJSONMessage();
-		System.out.println("TOKEN accessToken: " + accessToken);
+		System.out.println("AUTHORIZATION SERVER - /token - accessToken: " + accessToken);
 
-		//access t
+		//consume the authorization code, persist the access token. 
 		ts.addAccessToken(accessToken, Integer.valueOf(ACCESS_TOKEN_EXPIRATION), authzToken);
 
-		return Response.status(response.getResponseStatus()).entity(response.getBody()).build();
-		
+		return Response.status(response.getResponseStatus()).entity(response.getBody()).build();		
 	}
 
 	private void printParameters(HttpServletRequest request) {
@@ -133,20 +123,4 @@ public class TokenEndpoint {
 		System.out.println("> ");
 	}
 	
-	/*
-	@GET
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces("application/json")
-	public Response authorizeGet(@Context HttpServletRequest request) throws OAuthSystemException {
-
-		OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
-
-		OAuthResponse response = OAuthASResponse.tokenResponse(HttpServletResponse.SC_OK)
-				.setAccessToken(oauthIssuerImpl.accessToken()).setExpiresIn("3600").buildJSONMessage();
-
-		System.out.println("TOKEN @GET generatedToken: " + oauthIssuerImpl.accessToken());
-
-		return Response.status(response.getResponseStatus()).entity(response.getBody()).build();
-	}
-	 */
 }

@@ -49,7 +49,7 @@ public class ImagesResource {
 	@Secured
 	@GET
 	public JsonArray getAllImages(){
-		System.out.println("scheme:"+securityContext.getAuthenticationScheme());
+		System.out.println("RESOURCE SERVER - /images - GET request performed by " + req.getUserPrincipal().getName());
 		String serverURI = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/resources/images";
 		return jmans.buildAllImagesList(is.getAllImages(), serverURI);
 	}
@@ -71,6 +71,7 @@ public class ImagesResource {
 			@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception {
 			
+		System.out.println("RESOURCE SERVER - /images - POST request performed by " + req.getUserPrincipal().getName());
 		String loggedUser = securityContext.getUserPrincipal().getName();
 		int idUser = us.getUser(loggedUser).getIdUser();  
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -78,7 +79,7 @@ public class ImagesResource {
 	    String uploadPath = servletContext.getRealPath("images/")+"\\";	   
 	    String filePath = uploadPath + imageName;
 	    
-	    System.out.println("imgname: "+ imageName+"\n user: "+String.valueOf(idUser));
+	    System.out.println("RESOURCE SERVER - /images - POST - imgname: "+ imageName+"\n user: "+String.valueOf(idUser));
 	    
 	    if(is.getImage(imageName, idUser)!= null){
 	    	response = Response.status(Status.NOT_ACCEPTABLE)
@@ -88,10 +89,10 @@ public class ImagesResource {
 		    try{
 		    	is.storeImage(fileInputStream, filePath);
 		    } catch (IOException e){
-		    	System.out.println("errore nel salvataggio su disco");
+		    	System.out.println("RESOURCE SERVER - /images - POST - errore nel salvataggio su disco.");
 		    	return response;
 		    }
-		    System.out.println("Image stored into disk.");
+		    System.out.println("RESOURCE SERVER - /images - POST - Image stored into disk.");
 		    
 		    Integer idNewImage = is.saveImage(filePath, imageName, us.getUser(idUser));
 		    if (idNewImage != null) {

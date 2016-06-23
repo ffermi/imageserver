@@ -99,7 +99,7 @@ public class AuthzEndpoint {
     }
  
     private void persistAccessToken(String authzToken,HttpServletRequest req, OAuthAuthzRequest oauthReq) throws Exception{
-    	int idClient = Integer.valueOf(oauthReq.getParam(OAuth.OAUTH_CLIENT_ID));
+    	String idClient = oauthReq.getParam(OAuth.OAUTH_CLIENT_ID);
     	String resourceOwner = req.getUserPrincipal().getName();
     	 ts.addAuthzToken(authzToken, AUTHZ_TOKEN_EXPIRATION, idClient, resourceOwner);
     }
