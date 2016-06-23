@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="imageserver_pu" transaction-type="JTA">
+		<jta-data-source>jdbc/imagedb</jta-data-source>
+		<class>com.polimi.mw2016.rest.imageserver.model.AccessToken</class>
+		<class>com.polimi.mw2016.rest.imageserver.model.AuthzToken</class>
+		<class>com.polimi.mw2016.rest.imageserver.model.Client</class>
+		<class>com.polimi.mw2016.rest.imageserver.model.Image</class>
+		<class>com.polimi.mw2016.rest.imageserver.model.User</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+	</persistence-unit>
+</persistence>
