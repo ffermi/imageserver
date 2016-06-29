@@ -20,6 +20,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.SecurityContext;
 
 import com.polimi.mw2016.rest.imageserver.Secured;
 import com.polimi.mw2016.rest.imageserver.service.ImageService;
@@ -37,6 +38,7 @@ public class UsersResource {
 	@Context ResourceContext rc;
 	@Context ServletContext sc;
 	@Context HttpServletRequest request;
+	@Context SecurityContext sec;
 	
 	/**
 	 * Retrieves the list of users
@@ -46,7 +48,7 @@ public class UsersResource {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
 	public JsonArray getAllUsers(){	
-		System.out.println("RESOURCE SERVER - /users - GET request performed by " + request.getUserPrincipal().getName());
+		System.out.println("RESOURCE SERVER - /users - GET request performed by " + sec.getUserPrincipal().getName() );
 		String uriPrefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resources/users/";
 		return jmans.buildAllUsersList(us.getAllUsers(), uriPrefix);
 	}
@@ -80,7 +82,7 @@ public class UsersResource {
 				URI createdUri = null;
 				try {
 					createdUri = new URI("/resources/users/" + String.valueOf(idNewUser));
-					response = Response.created(createdUri).entity(us.getUser(idNewUser)).build();
+					response = Response.created(createdUri).entity(us.getUser(idNewUser)).type("application/json").build();
 				} catch (URISyntaxException e) {
 					e.printStackTrace();				
 				}
@@ -100,7 +102,7 @@ public class UsersResource {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
 	public JsonObject getUserInfo(@PathParam("idUser") int idUser){
-		System.out.println("RESOURCE SERVER - /users/" + idUser + " - request performed by " + request.getUserPrincipal().getName());
+		System.out.println("RESOURCE SERVER - /users/" + idUser + " - request performed by " + sec.getUserPrincipal().getName());
 		String serverURI = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resources/images";
 		String uriPrefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resources/users/";
 		return jmans.buildUserInfo(us.getUser(idUser), uriPrefix, serverURI);

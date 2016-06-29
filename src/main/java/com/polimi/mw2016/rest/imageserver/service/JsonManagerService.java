@@ -100,7 +100,7 @@ public class JsonManagerService {
 		System.out.println("Parsed newUser: "
 				+ "(" + attributes.get(0) + ", " + attributes.get(1) 
 				+ ", "+ attributes.get(2) + ", " + attributes.get(3) 
-				);
+				+ ")");
 		
 		return attributes;
 	}

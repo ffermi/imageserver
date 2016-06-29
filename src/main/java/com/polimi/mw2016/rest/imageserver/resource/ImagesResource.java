@@ -49,7 +49,7 @@ public class ImagesResource {
 	@Secured
 	@GET
 	public JsonArray getAllImages(){
-		System.out.println("RESOURCE SERVER - /images - GET request performed by " + req.getUserPrincipal().getName());
+		System.out.println("RESOURCE SERVER - /images - GET request performed by " + securityContext.getUserPrincipal().getName());
 		String serverURI = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/resources/images";
 		return jmans.buildAllImagesList(is.getAllImages(), serverURI);
 	}
@@ -71,7 +71,7 @@ public class ImagesResource {
 			@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception {
 			
-		System.out.println("RESOURCE SERVER - /images - POST request performed by " + req.getUserPrincipal().getName());
+		System.out.println("RESOURCE SERVER - /images - POST request performed by " + securityContext.getUserPrincipal().getName());
 		String loggedUser = securityContext.getUserPrincipal().getName();
 		int idUser = us.getUser(loggedUser).getIdUser();  
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).build();

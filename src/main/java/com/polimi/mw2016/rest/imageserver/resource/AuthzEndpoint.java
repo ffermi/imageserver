@@ -32,7 +32,7 @@ public class AuthzEndpoint {
 	
 	@Inject TokenService ts;	
 	
-	private final int AUTHZ_TOKEN_EXPIRATION = 30;
+	private final int AUTHZ_TOKEN_EXPIRATION = 600;
 	
     @GET
     public Response authorization(@Context HttpServletRequest request) throws URISyntaxException, OAuthSystemException {

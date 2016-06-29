@@ -10,9 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.polimi.mw2016.rest.imageserver.Secured;
 import com.polimi.mw2016.rest.imageserver.service.ImageService;
 import com.polimi.mw2016.rest.imageserver.service.UserService;
-
+@Secured
 @RequestScoped
 public class ImageSubResource {
 	

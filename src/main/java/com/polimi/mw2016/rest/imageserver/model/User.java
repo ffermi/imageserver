@@ -35,16 +35,19 @@ public class User implements Serializable {
 	@XmlTransient
 	private String password;
 
+	@XmlTransient
 	private String usergroup;
 
 	private String username;
 
 	//bi-directional many-to-one association to Accesstoken
 	@OneToMany(mappedBy="user")
+	@XmlTransient
 	private List<AccessToken> accesstokens;
 
 	//bi-directional many-to-one association to Authztoken
 	@OneToMany(mappedBy="user")
+	@XmlTransient
 	private List<AuthzToken> authztokens;
 
 	//bi-directional many-to-one association to Image
